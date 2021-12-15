@@ -9,17 +9,22 @@ namespace details {
         begin_point,
         end_point
     };
+    enum class api {
+        lin,
+        std
+    };
 }
 
-class tee {
+template <typename details::api>
+class Tee {
 public:
-    tee() = default;
+    Tee() = default;
 
-    ~tee() = default;
+    ~Tee() = default;
 
-    tee(const tee & tee) = delete;
+    Tee(const Tee & tee) = delete;
 
-    tee & operator=(const tee & tee) = delete;
+    Tee & operator=(const Tee & tee) = delete;
 
     void open(const std::string & path, details::mode mode);
 
@@ -29,4 +34,5 @@ public:
 
 private:
     std::unique_ptr<std::fstream> file_;
+    int file_des_;
 };

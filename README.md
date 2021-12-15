@@ -1,2 +1,2 @@
-# tee
-tee c++ implementtion
+# Tee
+Tee c++ implementtion

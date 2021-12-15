@@ -6,8 +6,8 @@ include(CI/conanbuildinfo.cmake)
 conan_basic_setup()
 
 add_executable(tee src/main.cpp
-        src/tee.hpp
-        src/tee.cpp
+        src/Tee.hpp
+        src/Tee.cpp
         src/line.hpp
         src/settings.cpp
         src/settings.hpp)
