@@ -1,17 +1,16 @@
 #include <iostream>
 
-#include "tee.hpp"
+#include "Tee.hpp"
 #include "settings.hpp"
 
 int main(int argc, const char** argv) {
-    settings setting;
-    auto ec = setting.parse(argc, argv);
-    if(ec) {
-        return ec.value();
+    auto settings = parse(argc, argv);
+    if(settings.errorCode) {
+        return settings.errorCode.value();
     }
-    tee tee;
+    Tee<details::api::lin> tee;
     try {
-        tee.open(setting.path, setting.mode);
+        tee.open(settings.path, settings.mode);
         tee.execute(std::cin, std::cout);
     } catch (const std::runtime_error & e) {
         tee.close();

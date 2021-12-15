@@ -3,12 +3,17 @@
 #include <iostream>
 #include <map>
 
-std::error_code settings::parse(int argc, const char **argv) {
+settings parse(int argc, const char **argv) {
+    settings settings;
+
+    boost::program_options::options_description m_desc {"Allowed options"};
+    boost::program_options::variables_map m_vm;
+
     m_desc.add_options()
             ("help", "Show help")
-            ("exist_path,a", boost::program_options::value<std::string>(&path)->composing(),
+            ("exist_path,a", boost::program_options::value<std::string>(&settings.path)->composing(),
              "Set file path for adding to the end")
-            ("path", boost::program_options::value<std::string>(&path), "Set file path for tee");
+            ("path", boost::program_options::value<std::string>(&settings.path), "Set file path for Tee");
 
     try {
         boost::program_options::positional_options_description positionalDescription;
@@ -18,16 +23,18 @@ std::error_code settings::parse(int argc, const char **argv) {
 
         if (m_vm.count("help")) {
             std::cout << m_desc << std::endl;
-            return std::make_error_code(std::errc::no_message);
+            settings.errorCode = std::make_error_code(std::errc::io_error);
+            return settings;
         }
         if (m_vm.count("a")) {
-            mode = details::mode::end_point;
+            settings.mode = details::mode::end_point;
         } else if (m_vm.count("path")) {
-            mode = details::mode::begin_point;
+            settings.mode = details::mode::begin_point;
         }
     } catch (const boost::program_options::error &error) {
         std::cerr << "No such option: " << error.what();
-        return std::make_error_code(std::errc::protocol_error);
+        settings.errorCode = std::make_error_code(std::errc::io_error);
+        return settings;
     }
-    return {};
+    return settings;
 }
