@@ -49,6 +49,9 @@ void Tee<details::api::lin>::open(const std::string & path, details::mode mode) 
 
 template <>
 void Tee<details::api::lin>::close() {
+    if(file_des_ == -1) {
+        return;
+    }
     fsync(file_des_);
     if(::close(file_des_) == -1) {
         throw std::runtime_error("File cannot be close!");

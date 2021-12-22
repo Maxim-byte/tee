@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.17)
 project(tee)
 
 set(CMAKE_CXX_STANDARD 14)
-include(CI/conanbuildinfo.cmake)
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 
 add_executable(tee src/main.cpp
